@@ -186,7 +186,7 @@ class _LoginScreenState extends State < LoginScreen > {
     super.dispose();
   }
 
-   void _signInWithEmailAndPassword() async {
+  void _signInWithEmailAndPassword() async {
     try {
       final email = LemailController.text;
       final password = LpasswordController.text;
@@ -196,24 +196,31 @@ class _LoginScreenState extends State < LoginScreen > {
       }));
       // user is signed in
       Fluttertoast.showToast(
-      msg: 'You are now logged in!',
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
+        msg: 'You are now logged in!',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
       );
 
-    } on FirebaseAuthException catch (e) {
+    }
+    on FirebaseAuthException
+    catch (e) {
       if (e.code == 'user-not-found') {
-        Fluttertoast.showToast(
-        msg: 'No user found for that email',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color.fromARGB(255, 255, 0, 0), // set the background color
+            content: Text('User not Found'), // set the message text
+            duration: Duration(seconds: 2), // set the duration for how long the message will be displayed
+          ),
+        );
+
       } else if (e.code == 'wrong-password') {
-        Fluttertoast.showToast(
-        msg: 'Incorrect Password',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Color.fromARGB(255, 255, 0, 0), // set the background color
+            content: Text('Incorrect Password'), // set the message text
+            duration: Duration(seconds: 2), // set the duration for how long the message will be displayed
+          ),
+        );
       }
     }
   }
@@ -315,11 +322,11 @@ class _LoginScreenState extends State < LoginScreen > {
                       width: 340,
                       height: 60,
                       child: TextButton(
-                        onPressed: ()
-                          { _signInWithEmailAndPassword();
-                          
-                        
-                         
+                        onPressed: () {
+                          _signInWithEmailAndPassword();
+
+
+
                           /* Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                              return FirestoreDataScreen();
                            }));

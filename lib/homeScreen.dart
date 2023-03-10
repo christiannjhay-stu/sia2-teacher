@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:read_data/loginScreen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class FirestoreDataScreen extends StatelessWidget {
   final CollectionReference _collectionRef = FirebaseFirestore.instance.collection('clubs');
@@ -8,6 +11,7 @@ class FirestoreDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+       
         title: Text('List of clubs'),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -52,6 +56,112 @@ class FirestoreDataScreen extends StatelessWidget {
           );
         },
       ),
+      
+      drawer: Drawer(
+        backgroundColor: Color.fromARGB(255, 9, 26, 47),
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+          children: [
+
+            SizedBox(height: 20),
+            ListTileTheme(
+              child: ListTile(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color.fromARGB(255, 251, 183, 24)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                leading: Icon(Icons.home),
+                title: const Text('Home'),
+                  onTap: () {
+
+                  },
+                  textColor: Colors.white,
+                  iconColor: Colors.white,
+              )
+            ),
+            SizedBox(height: 4),
+            ListTileTheme(
+              child: ListTile(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color.fromARGB(255, 251, 183, 24)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                leading: Icon(Icons.work),
+                title: const Text('Affiliations'),
+                  onTap: () {
+
+                  },
+                  textColor: Colors.white,
+                  iconColor: Colors.white,
+              )
+            ),
+            SizedBox(height: 4),
+            ListTileTheme(
+              child: ListTile(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color.fromARGB(255, 251, 183, 24)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                leading: Icon(Icons.document_scanner),
+                title: const Text('Report'),
+                  onTap: () {
+
+                  },
+                  textColor: Colors.white,
+                  iconColor: Colors.white,
+              )
+            ),
+            SizedBox(height: 520),
+            ListTileTheme(
+              child: ListTile(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color.fromARGB(255, 251, 183, 24)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                leading: Icon(Icons.settings),
+                title: const Text('Settings'),
+                  onTap: () {
+
+                  },
+                  textColor: Colors.white,
+                  iconColor: Colors.white,
+              )
+            ),
+            SizedBox(height: 4),
+            ListTileTheme(
+              child: ListTile(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: Color.fromARGB(255, 251, 183, 24)),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                leading: Icon(Icons.logout),
+                title: const Text('Log out'),
+                  onTap: () {
+
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext) {
+                      return LoginScreen();
+                    }));
+
+                    
+                     ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Color.fromARGB(255, 255, 0, 0), // set the background color
+                        content: Text('Logged out'), // set the message text
+                        duration: Duration(seconds: 2), // set the duration for how long the message will be displayed
+                      ),
+                    );
+
+
+                  },
+                  textColor: Colors.white,
+                  iconColor: Colors.white,
+              )
+            ),
+          ],
+        ),
+      ),
+     
     );
   }
 }
