@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:read_data/loginScreen.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 
 
 class FirestoreDataScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class FirestoreDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-       
+        backgroundColor: Color.fromARGB(255, 9, 26, 47),
         title: Text('List of clubs'),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -32,26 +32,44 @@ class FirestoreDataScreen extends StatelessWidget {
                 return SizedBox();
               }
               final mapData = data as Map<String, dynamic>;
+
+              Stack(
+
+              );
               return Card(
-                child: ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                borderOnForeground: true,
+                
+                color: Color.fromARGB(255, 9, 26, 47).withOpacity(0.2),
+                  child: ListTile(
                   leading: CircleAvatar(
                   radius: 30,
                   backgroundImage: NetworkImage(mapData['logo'] ?? ''),
                 ),
-                  title: Text(mapData['name'] ?? ''),
+                  title: Text(mapData['name'] ?? '',
+                  style: TextStyle(
+                    color: Colors.white
+                  ),),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(''),
-                      Text(mapData['description'] ?? ''),
+                      Text(mapData['description'] ?? '',
+                  style: TextStyle(
+                    color: Colors.white
+                  ),),
                       Text(''),
-                      Text(mapData['email'] ?? ''),
+                      Text(mapData['email'] ?? '',
+                  style: TextStyle(
+                    color: Color.fromARGB(246, 255, 208, 0)
+                  ),),
                       
                     ],
-                  )
-                  
+                  ) 
                 ),
-              );
+                );
             },
           );
         },
@@ -143,7 +161,7 @@ class FirestoreDataScreen extends StatelessWidget {
                       return LoginScreen();
                     }));
 
-                    
+
                      ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Color.fromARGB(255, 255, 0, 0), // set the background color

@@ -52,7 +52,7 @@ Widget Footer() {
     padding: const EdgeInsets.only(top: 20),
       child: Text(
         textAlign: TextAlign.center,
-        'By using DuoLingo you agree to our Term of Service and\nPrivacy Policy.',
+        'By using Ateneo you agree to our Term of Service and\nPrivacy Policy.',
         style: TextStyle(
           color: Colors.white,
           fontSize: 10,
@@ -86,20 +86,7 @@ Widget buildForgotPassBtn() {
 
 
 
-Widget orLogin() {
-  return Container(
-    alignment: Alignment.center,
-    padding: const EdgeInsets.only(top: 20),
-      child: Text(
-        'or log in with',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 12,
-          letterSpacing: 1.2
-        ),
-      )
-  );
-}
+
 
 Widget LoginWith() {
   return Row(
@@ -170,6 +157,16 @@ Widget LoginWith() {
   );
 }
 
+Widget Logo(){
+  return Center(
+    child: Image.asset(
+      'assets/images/adduLogo.png',
+       width: 200,
+       height: 200,
+
+      )
+  );
+}
 
 
 class _LoginScreenState extends State < LoginScreen > {
@@ -250,10 +247,13 @@ class _LoginScreenState extends State < LoginScreen > {
                             color: Color.fromARGB(255, 255, 255, 255),
                             fontSize: 40,
                             fontWeight: FontWeight.bold,
-                            fontFamily: "Noopla",
+                            fontFamily: "Ateneo",
                           ),
                         ),
-                    ),
+                        
+                    ), 
+                    SizedBox(height: 25),
+                    Logo(),
                     SizedBox(height: 50),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,13 +324,6 @@ class _LoginScreenState extends State < LoginScreen > {
                       child: TextButton(
                         onPressed: () {
                           _signInWithEmailAndPassword();
-
-
-
-                          /* Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                             return FirestoreDataScreen();
-                           }));
-                            */
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll < Color > (Color.fromARGB(255, 251, 183, 24)),
@@ -351,11 +344,8 @@ class _LoginScreenState extends State < LoginScreen > {
 
                         ),
                       ),
-                    ),
-                    orLogin(),
-                    SizedBox(height: 12),
-
-                    SizedBox(height: 32),
+                    ), 
+                    SizedBox(height: 2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

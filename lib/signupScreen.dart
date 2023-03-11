@@ -203,6 +203,17 @@ Widget buildConfirmPassword() {
   );
 }
 
+Widget Logo(){
+  return Center(
+    child: Image.asset(
+      'assets/images/adduLogo.png',
+       width: 200,
+       height: 200,
+
+      )
+  );
+}
+
 final emailController = TextEditingController();
 final passwordController = TextEditingController();
 
@@ -240,11 +251,13 @@ class _SignUpScreenState extends State < SignUpScreen > {
                             color: Color.fromARGB(255, 255, 255, 255),
                             fontSize: 40,
                             fontWeight: FontWeight.bold,
-                            fontFamily: "Noopla",
+                            fontFamily: "Ateneo",
                           ),
                         ),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 25),
+                    Logo(),
+                    SizedBox(height: 20),
                     buildFirstName(),
                     buildSUsername(),
                     buildSEmail(),
@@ -261,11 +274,13 @@ class _SignUpScreenState extends State < SignUpScreen > {
                             password: passwordController.text.trim()
                             
                           );
-                          Fluttertoast.showToast(
-                          msg: 'Successfully created an account',
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          );  
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Color.fromARGB(255, 27, 100, 25), // set the background color
+                              content: Text('Account Successfully Created'), // set the message text
+                              duration: Duration(seconds: 2), // set the duration for how long the message will be displayed
+                            ),
+                          ); 
 
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                             return LoginScreen();
