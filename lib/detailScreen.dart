@@ -1,8 +1,21 @@
-import 'dart:ui';
 
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:read_data/signupScreen.dart';
+
+import 'user_provider.dart';
+
+
+
 
 class DetailScreen extends StatelessWidget {
+  
+  void affiliations() async {
+   
+  }
 
   final Map < String, dynamic > data;
 
@@ -12,6 +25,8 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? email = FirebaseAuth.instance.currentUser?.email;
+    context.read<UserProvider>().setEmail(email!);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 9, 26, 47),
@@ -37,8 +52,14 @@ class DetailScreen extends StatelessWidget {
                       width: 340,
                       height: 60,
                       child: TextButton(
-                        onPressed: () {
-                          print('Joined');
+                        onPressed: () async {
+                          QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('students').where('email', isEqualTo: email).get();
+                          querySnapshot.docs.forEach((doc) async {
+                          // Add the subcollection document here
+                          await doc.reference.collection('affiliations').add({
+                            'club': data['name'],                           
+                          });
+                        });   
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll < Color > (Color.fromARGB(255, 251, 183, 24)),
