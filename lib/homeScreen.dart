@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:read_data/detailScreen.dart';
 import 'package:read_data/loginScreen.dart';
 import 'package:read_data/user_provider.dart';
 
@@ -46,7 +47,7 @@ class FirestoreDataScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailScreen(data: data),
+                      builder: (context) => DetailScreen(data: mapData),
                     ),
                   );
                 },
