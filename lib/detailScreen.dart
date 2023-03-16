@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:read_data/signupScreen.dart';
+import 'package:read_data/homeScreen.dart';
+
 
 import 'user_provider.dart';
 
@@ -60,6 +61,20 @@ class DetailScreen extends StatelessWidget {
                             'club': data['name'],                           
                           });
                         });   
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Color.fromARGB(255, 27, 100, 25), // set the background color
+                              content: Text('Successfully Joined'), // set the message text
+                              duration: Duration(seconds: 2), // set the duration for how long the message will be displayed
+                            ),
+                          ); 
+
+
+                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                            return FirestoreDataScreen();
+                          }));
+
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStatePropertyAll < Color > (Color.fromARGB(255, 251, 183, 24)),

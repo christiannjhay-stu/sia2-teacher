@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:read_data/affiliations.dart';
 import 'package:read_data/detailScreen.dart';
 import 'package:read_data/loginScreen.dart';
 import 'package:read_data/user_provider.dart';
@@ -138,7 +139,9 @@ class FirestoreDataScreen extends StatelessWidget {
                 leading: Icon(Icons.work),
                 title: const Text('Affiliations'),
                   onTap: () {
-
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                            return AffiliationsList(userEmail: email);
+                          }));
                   },
                   textColor: Colors.white,
                   iconColor: Colors.white,
