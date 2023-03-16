@@ -41,7 +41,16 @@ class FirestoreDataScreen extends StatelessWidget {
               Stack(
 
               );
-              return Card(
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailScreen(data: data),
+                    ),
+                  );
+                },
+                child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -74,7 +83,9 @@ class FirestoreDataScreen extends StatelessWidget {
                     ],
                   ) 
                 ),
-                );
+                )
+              );
+              
             },
           );
         },
