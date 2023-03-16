@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:read_data/loginScreen.dart';
+import 'package:read_data/user_provider.dart';
 
 
 
@@ -9,6 +12,8 @@ class FirestoreDataScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? email = FirebaseAuth.instance.currentUser?.email;
+    context.read<UserProvider>().setEmail(email!);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 9, 26, 47),
@@ -83,6 +88,19 @@ class FirestoreDataScreen extends StatelessWidget {
           children: [
 
             SizedBox(height: 20),
+             ListTileTheme(
+              child: ListTile(
+                
+                leading: Icon(Icons.contact_mail),
+                title: Text('${context.watch<UserProvider>().email}'),
+                  onTap: () {
+
+                  },
+                  textColor: Colors.white,
+                  iconColor: Colors.white,
+              )
+            ),
+            SizedBox(height: 30),
             ListTileTheme(
               child: ListTile(
                 shape: RoundedRectangleBorder(
@@ -146,6 +164,7 @@ class FirestoreDataScreen extends StatelessWidget {
                   iconColor: Colors.white,
               )
             ),
+            
             SizedBox(height: 4),
             ListTileTheme(
               child: ListTile(

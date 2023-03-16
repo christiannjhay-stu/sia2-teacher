@@ -346,39 +346,7 @@ class _LoginScreenState extends State < LoginScreen > {
                       ),
                     ), 
                     SizedBox(height: 2),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Don't have an account?",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              letterSpacing: 1.2
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                return SignUpScreen();
-                              }));
-                            },
-                            child: Text(
-                              'Signup',
-                              style: TextStyle(
-                                color: Color.fromARGB(246, 255, 208, 0),
-                                fontSize: 10,
-                                letterSpacing: 1.2,
-
-                              ),
-                            )
-                          ),
-                        )
-                      ],
-                    ),
+                  
                     Footer(),
                   ],
                 ),
