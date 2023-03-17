@@ -5,19 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:read_data/homeScreen.dart';
-
-
 import 'user_provider.dart';
-
-
 
 
 class DetailScreen extends StatelessWidget {
   
-  void affiliations() async {
-   
-  }
-
   final Map < String, dynamic > data;
 
   const DetailScreen({
@@ -56,7 +48,7 @@ class DetailScreen extends StatelessWidget {
                         onPressed: () async {
                           QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('students').where('email', isEqualTo: email).get();
                           querySnapshot.docs.forEach((doc) async {
-                          // Add the subcollection document here
+                          
                           await doc.reference.collection('affiliations').add({
                             'club': data['name'],                           
                           });

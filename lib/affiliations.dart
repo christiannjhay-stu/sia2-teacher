@@ -1,36 +1,69 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:read_data/user_provider.dart';
 
-class AffiliationsList extends StatelessWidget {
-  final String userEmail;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  AffiliationsList({required this.userEmail});
+class MyWidget extends StatefulWidget {
+
+   String email;
+
+   MyWidget({required this.email});
+
+  @override
+
+  _MyWidgetState createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+
+  final CollectionReference clubsRef = FirebaseFirestore.instance.collection('students');
+  late Stream<QuerySnapshot<Map<String, dynamic>>> _membersStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _membersStream = clubsRef.doc('Test').collection('affiliations').snapshots();
+    
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('students').where('email', isEqualTo: 'cej@gmail.com') .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
-        }
-        else(
-          print('no data')
-        );
-        List<dynamic> affiliations = snapshot.data!.docs[0]['affiliations'];
-        return ListView.builder(
-          itemCount: affiliations.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: ListTile(
-                title: Text(affiliations[index]['club']),
-                
-              ),
-            );
-          },
-        );
-      },
+     String? email = FirebaseAuth.instance.currentUser?.email;
+    context.read<UserProvider>().setEmail(email!);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Affiliations'),
+      ),
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: _membersStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              DocumentSnapshot<Map<String, dynamic>> documentSnapshot = snapshot.data!.docs[index];
+              Map<String, dynamic> data = documentSnapshot.data()!;
+              return Card(
+                child: ListTile(
+                  title: Text(data['club']),
+                  subtitle: Text(email),
+                  
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
