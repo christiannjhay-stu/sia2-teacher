@@ -26,7 +26,8 @@ class DetailScreen extends StatelessWidget {
         title: Text(data['name']),
       ),
       body: Container(
-        child: Stack(
+        child: Center(
+          child: Stack(
           children: < Widget > [
             Column(
               children: [
@@ -48,7 +49,6 @@ class DetailScreen extends StatelessWidget {
                         onPressed: () async {
                           QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('students').where('email', isEqualTo: email).get();
                           querySnapshot.docs.forEach((doc) async {
-                          
                           await doc.reference.collection('affiliations').add({
                             'club': data['name'],                           
                           });
@@ -93,6 +93,10 @@ class DetailScreen extends StatelessWidget {
             )
           ],
         ),
+        )
+        
+        
+        
       )
     );
   }
