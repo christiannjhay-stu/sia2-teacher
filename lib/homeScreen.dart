@@ -140,7 +140,7 @@ class FirestoreDataScreen extends StatelessWidget {
                 title: const Text('Affiliations'),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                            return MyWidget(email: email);
+                            return StudentAffiliations(email: email);
                           }));
                   },
                   textColor: Colors.white,
