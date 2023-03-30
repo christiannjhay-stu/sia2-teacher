@@ -10,7 +10,7 @@ import 'package:read_data/user_provider.dart';
 
 
 class FirestoreDataScreen extends StatelessWidget {
-  final CollectionReference _collectionRef = FirebaseFirestore.instance.collection('clubs');
+  final CollectionReference _collectionRef = FirebaseFirestore.instance.collection('students');
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class FirestoreDataScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 9, 26, 47),
-        title: Text('List of clubs'),
+        title: Text('List of Students'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _collectionRef.snapshots(),
@@ -62,7 +62,7 @@ class FirestoreDataScreen extends StatelessWidget {
                   child: ListTile(
                   leading: CircleAvatar(
                   radius: 30,
-                  backgroundImage: NetworkImage(mapData['logo'] ?? ''),
+                  
                 ),
                   title: Text(mapData['name'] ?? '',
                   style: TextStyle(
@@ -72,12 +72,12 @@ class FirestoreDataScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(''),
-                      Text(mapData['description'] ?? '',
+                      Text(mapData['email'] ?? '',
                   style: TextStyle(
                     color: Colors.white
                   ),),
                       Text(''),
-                      Text(mapData['email'] ?? '',
+                      Text(mapData['username'] ?? '',
                   style: TextStyle(
                     color: Color.fromARGB(246, 255, 208, 0)
                   ),),

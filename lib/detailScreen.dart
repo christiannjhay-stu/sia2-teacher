@@ -25,79 +25,85 @@ class DetailScreen extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 9, 26, 47),
         title: Text(data['name']),
       ),
-      body: Container(
-        child: Center(
-          child: Stack(
-          children: < Widget > [
-            Column(
-              children: [
-                Padding(padding: EdgeInsets.all(20),
-                  child: Container(
-                    child: Image(image: NetworkImage(data['logo']), )
-                  ),
-                ),
-                Padding(padding: EdgeInsets.all(20),
-                  child: Text(data['description'], style: TextStyle(
-                    color: Colors.white
-                  ),)
-                ),
-                SizedBox(height: 20),
-                Container(
-                      width: 340,
-                      height: 60,
-                      child: TextButton(
-                        onPressed: () async {
-                          QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('students').where('email', isEqualTo: email).get();
-                          querySnapshot.docs.forEach((doc) async {
-                          await doc.reference.collection('affiliations').add({
-                            'club': data['name'],                           
-                          });
-                        });   
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance
+            .collection('students')
+            .where('name', isEqualTo: data['name'])
+            .snapshots()
+            .asyncMap((QuerySnapshot<Map<String, dynamic>> query) async {
+          return await query.docs.first.reference
+              .collection('affiliations')
+              .get();
+        }),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Color.fromARGB(255, 27, 100, 25), // set the background color
-                              content: Text('Successfully Joined'), // set the message text
-                              duration: Duration(seconds: 2), // set the duration for how long the message will be displayed
-                            ),
-                          ); 
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading");
+          }
 
-
-                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+          return new ListView(
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+              return new Card(
+                color: Color.fromARGB(255, 9, 26, 47).withOpacity(0.2),
+                child: new Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: new Row(
+                    children: <Widget>[
+                      new Expanded(
+                        child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                 Text('Filipino         '+ data['Filipino1'] +'         '+ data['Filipino2']+'         '+ data['Filipino3']+'         '+ data['Filipino4'],
+                                 style: TextStyle(
+                                  color: Color.fromARGB(246, 255, 208, 0)
+                                 ),),
+                              ],
+                            )
+                            
+                          ],
+                        ),
+                      ),
+                      new IconButton(
+                        icon: Icon(Icons.delete,
+                        color: Colors.red,),
+                        onPressed: () {
+                          document.reference.delete();
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                             return FirestoreDataScreen();
                           }));
 
+
+                           ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Color.fromARGB(255, 255, 0, 0), // set the background color
+                              content: Text('Leave'), // set the message text
+                              duration: Duration(seconds: 2), // set the duration for how long the message will be displayed
+                            ),
+                          ); 
+                          
                         },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll < Color > (Color.fromARGB(255, 251, 183, 24)),
-                          shape: MaterialStateProperty.all < RoundedRectangleBorder > (
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-
-                            )
-                          )
-                        ),
-                        child: Text(
-                          'Join Club',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontFamily: "Noopla"
-                          ),
-
-                        ),
                       ),
-                    ), 
-                
-              ],
-            )
-          ],
-        ),
-        )
-        
-        
-        
-      )
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          );
+        },
+      ),
+      
+      
+      
+      
+      
     );
   }
 }
