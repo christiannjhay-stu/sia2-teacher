@@ -241,7 +241,7 @@ class _LoginScreenState extends State < LoginScreen > {
                     Padding(
                       padding: const EdgeInsets.only(top: 80.0),
                         child: Text(
-                          'Ateneo de Davao\nUniversity',
+                          'Ateneo de Davao\nUniversity\nTeacher',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color.fromARGB(255, 255, 255, 255),

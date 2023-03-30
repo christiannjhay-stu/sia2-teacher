@@ -40,6 +40,8 @@ class DetailScreen extends StatelessWidget {
               .collection('affiliations')
               .get();
               
+              
+              
         }),
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {

@@ -160,7 +160,7 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
                 decoration: InputDecoration(
                   
                   labelStyle: TextStyle(
-                    color: Colors.white
+                    color: Color.fromARGB(255, 251, 183, 24)
                   ),
                   labelText: 'Name',
                   hintStyle: TextStyle(
@@ -181,7 +181,7 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
                 controller: _subjectController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
-                    color: Colors.white
+                    color: Color.fromARGB(255, 251, 183, 24)
                   ),
                   labelText: 'Section',
                 ),
