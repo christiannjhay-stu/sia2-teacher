@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:read_data/affiliations.dart';
 import 'package:read_data/detailScreen.dart';
+import 'package:read_data/information.dart';
 import 'package:read_data/loginScreen.dart';
 import 'package:read_data/user_provider.dart';
 
@@ -83,7 +84,8 @@ class FirestoreDataScreenState extends State<FirestoreDataScreen> {
           return ListView.builder(
             itemCount: documents.length,
             itemBuilder: (BuildContext context, int index) {
-              String docId = documents[index].id;
+              final docId = documents[index].id;
+              String docIdt = docId;
               final data = documents[index].data();
               if (data == null) {
                 return SizedBox();
@@ -96,10 +98,14 @@ class FirestoreDataScreenState extends State<FirestoreDataScreen> {
               );
               return GestureDetector(
                 onTap: () {
+                 
+                  print('working' + docId);
                   Navigator.push(
+                    
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailScreen(data: data),
+                      builder: (context) => DetailScreen(data: data, docID: docIdt,),
+
                     ),
                   );
                 },
@@ -206,9 +212,11 @@ class FirestoreDataScreenState extends State<FirestoreDataScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 leading: Icon(Icons.document_scanner),
-                title: const Text('Report'),
+                title: const Text('My Information'),
                   onTap: () {
-
+                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                            return Information();
+                          }));
                   },
                   textColor: Colors.white,
                   iconColor: Colors.white,
