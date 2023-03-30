@@ -1,3 +1,5 @@
+
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,13 +9,58 @@ import 'package:read_data/detailScreen.dart';
 import 'package:read_data/loginScreen.dart';
 import 'package:read_data/user_provider.dart';
 
+class FirestoreDataScreen extends StatefulWidget {
+  @override
+  FirestoreDataScreenState createState() => FirestoreDataScreenState();
+}
+
+class FirestoreDataScreenState extends State<FirestoreDataScreen> {
+  
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+   final FirebaseAuth _auth = FirebaseAuth.instance;
+    
 
 
-class FirestoreDataScreen extends StatelessWidget {
-  final CollectionReference _collectionRef = FirebaseFirestore.instance.collection('students');
+  String section = '';
+  
+
+  @override
+  void initState() {
+    super.initState();
+    getTeacherData();
+  }
+
+
+ 
+
+ Future<void> getTeacherData() async {
+    final currentUser = _auth.currentUser;
+
+    final QuerySnapshot querySnapshot = await _firestore
+        .collection('teachers')
+        .where('email', isEqualTo: currentUser?.email)
+        .get();
+    
+    
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+     
+      setState(() {
+        section = documentSnapshot.get('section');
+       
+      });
+    } else {
+      // Handle the case where the query does not return any documents
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
+   
+   
+    
     String? email = FirebaseAuth.instance.currentUser?.email;
     context.read<UserProvider>().setEmail(email!);
     return Scaffold(
@@ -22,24 +69,28 @@ class FirestoreDataScreen extends StatelessWidget {
         title: Text('List of Students'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _collectionRef.snapshots(),
+         stream: FirebaseFirestore.instance.collection('students').where('section', isEqualTo: section).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
           final documents = snapshot.data!.docs;
           if (documents == null || documents.isEmpty) {
+          
             return Center(child: Text('No data found'));
           }
           return ListView.builder(
             itemCount: documents.length,
             itemBuilder: (BuildContext context, int index) {
+              String docId = documents[index].id;
               final data = documents[index].data();
               if (data == null) {
                 return SizedBox();
               }
+              
               final mapData = data as Map<String, dynamic>;
-
+              
               Stack(
 
               );
@@ -48,7 +99,7 @@ class FirestoreDataScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailScreen(data: mapData),
+                      builder: (context) => DetailScreen(data: data),
                     ),
                   );
                 },
@@ -214,6 +265,68 @@ class FirestoreDataScreen extends StatelessWidget {
         ),
       ),
      
+    );
+  }
+}
+
+class EditTeacherPage extends StatefulWidget {
+
+
+  final String documentID;
+
+  EditTeacherPage({required this.documentID});
+
+  @override
+  _EditTeacherPageState createState() => _EditTeacherPageState();
+}
+
+class _EditTeacherPageState extends State<EditTeacherPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _teacherNameController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    _teacherNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Student'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _teacherNameController,
+                decoration: InputDecoration(
+                  labelText: 'Teacher Name',
+                ),
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () async {
+                  final String teacherName = _teacherNameController.text;
+                  print('working9999'+ widget.documentID);
+                  await _firestore
+                      .collection('students')
+                      .doc(widget.documentID)
+                      .update({'name': teacherName});
+
+                  Navigator.pop(context);
+                },
+                child: Text('Save'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
