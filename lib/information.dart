@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:read_data/user_provider.dart';
+import 'package:intl/intl.dart';
 
 class Information extends StatefulWidget {
 
@@ -135,6 +136,7 @@ class _InformationState extends State<Information> {
 
 
 class EditTeacherScreen extends StatefulWidget {
+  final TextEditingController _controller = TextEditingController();
   final String documentId;
 
   EditTeacherScreen({Key? key, required this.documentId}) : super(key: key);
@@ -144,6 +146,10 @@ class EditTeacherScreen extends StatefulWidget {
 }
 
 class _EditTeacherScreenState extends State<EditTeacherScreen> {
+  
+   DateTime? _selectedDate;
+
+
   final _formKey = GlobalKey<FormState>();
 
   final _nameController = TextEditingController();
@@ -152,7 +158,7 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
    final _addressController = TextEditingController();
   final _contactController = TextEditingController();
    final _genderController = TextEditingController();
-     final _birthdayController = TextEditingController();
+  final _BirthdayController = TextEditingController();
         final _GradeController = TextEditingController();
         final _MTController = TextEditingController();
         final _ReligionController = TextEditingController();
@@ -193,7 +199,7 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
         _addressController.text = data['address'];
         _contactController.text = data['contact'];
         _genderController.text = data['gender'];
-        _birthdayController.text = data['birthday'];
+        _BirthdayController.text = data['birthday'];
         _MTController.text = data['MT'];
         _ReligionController.text = data['religion'];
 
@@ -213,6 +219,34 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
     });
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+  final DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1900),
+    lastDate: DateTime.now(),
+  );
+
+  if (picked != null && picked != _selectedDate) {
+    setState(() {
+      _selectedDate = picked;
+      DateTime truncatedDate = DateTime(
+        picked.year,
+        picked.month,
+        picked.day,
+        0,
+        0,
+        0,
+        0,
+        0,
+      );
+      String formattedDateString =
+          DateFormat('dd/MM/yyyy').format(truncatedDate);
+      _BirthdayController.text = formattedDateString;
+    });
+  }
+}
+
   Future<void> _updateTeacher() async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -220,9 +254,10 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
         String newAddress = _addressController.text;
         String newContact = _contactController.text;
         String newGender = _genderController.text;
-        String newBirthday = _birthdayController.text;
+        
         String newMT = _MTController.text;
         String newReligion = _ReligionController.text;
+        String newBirthday = _BirthdayController.text;
 
 
         // Only update the fields that have changed
@@ -370,20 +405,22 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
                 ),
                 
               ),
-                TextFormField(
-               
-                style: TextStyle(
-                  color: Colors.white
-                ),
-                controller: _birthdayController,
-                decoration: InputDecoration(
+                
+               TextFormField(
+                    style: TextStyle(
+                      color: Colors.white
+                    ),
+                  controller: _BirthdayController,
+                  decoration: InputDecoration(
                   labelStyle: TextStyle(
                     color: Color.fromARGB(255, 251, 183, 24)
                   ),
-                  labelText: 'Birthday',
+                  labelText: 'DD/MM/YYYY',
                 ),
-                
-              ),
+                  readOnly: true,
+                  onTap: () => _selectDate(context),
+                  keyboardType: TextInputType.datetime,
+                ),
                 TextFormField(
                
                 style: TextStyle(
