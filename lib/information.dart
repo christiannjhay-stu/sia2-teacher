@@ -118,10 +118,7 @@ class _InformationState extends State<Information> {
                    onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                             return EditTeacherScreen(documentId: documentId);
-                          }));
-                          
-                          
-                          
+                          }));           
                         },
                 )
               );
