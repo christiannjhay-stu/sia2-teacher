@@ -96,18 +96,9 @@ class DetailScreen extends StatelessWidget {
                             return EditTeacherPage(documentID: documentID, docID: docID  );
                           }));
                           
-                          /*Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                            return FirestoreDataScreen();
-                          }));*/
+                         
 
-
-                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Color.fromARGB(255, 255, 0, 0), // set the background color
-                              content: Text('Leave'), // set the message text
-                              duration: Duration(seconds: 2), // set the duration for how long the message will be displayed
-                            ),
-                          ); 
+                          
                           
                         },
                       ),
@@ -165,6 +156,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 9, 26, 47),
         title: Text('Edit Grade'),
       ),
       body: Center(

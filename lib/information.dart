@@ -114,7 +114,7 @@ class _InformationState extends State<Information> {
                   ],
                 ),
                  trailing: IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: Icon(Icons.edit, color: Colors.white,),
                    onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                             return EditTeacherScreen(documentId: documentId);
@@ -448,6 +448,7 @@ class _EditTeacherScreenState extends State<EditTeacherScreen> {
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
+                
                 onPressed: () {
                   _updateTeacher();
                   ScaffoldMessenger.of(context).showSnackBar(
