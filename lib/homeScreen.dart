@@ -194,7 +194,7 @@ class FirestoreDataScreenState extends State<FirestoreDataScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 leading: Icon(Icons.work),
-                title: const Text('Affiliations'),
+                title: const Text('Announcements'),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                             return StudentAffiliations(email: email);
