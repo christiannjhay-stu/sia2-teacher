@@ -68,9 +68,9 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
                  Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 20, left: 50),
+              padding: EdgeInsets.only(top: 20, bottom: 20, left: 30),
               child: Text(
-                'REMARKS',
+                'FINAL',
                 style: TextStyle(color: Colors.white),
                     
                   ),
@@ -167,6 +167,7 @@ class DetailScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                  SizedBox(width: 40,),
                                    new IconButton(
                                     icon: Icon(Icons.edit,
                                     color: Colors.red,),
