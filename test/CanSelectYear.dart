@@ -12,44 +12,36 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-    String year = '';
+  late String _selectedYear;
 
   @override
   void initState() {
     super.initState();
-    _getData();
-  }
 
-  Future<void> _getData() async {
-    try {
-      final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-          .collection('schoolyear')
-          .doc('SchoolYear')
-          .get();
-      final String year = documentSnapshot.get('yearStarted');
-      setState(() {
-        this.year = year;
-      });
-    } catch (e) {
-      print('Error retrieving data: $e');
-    }
-  } 
-  
+
+
+
+    _selectedYear = '2023'; // set default value for dropdown
+  }
   
   @override
   Widget build(BuildContext context) {
     
-  
-    Query<Map<String, dynamic>> 
+    final CollectionReference collectionRef = FirebaseFirestore.instance.collection('yourCollectionName');
     
-    subjectsRef =
+    
+    Query<Map<String, dynamic>> subjectsRef =
         FirebaseFirestore.instance
             .collection('students')
             .doc(widget.studentId)
             .collection('Subjects')
-            .where('Year', isEqualTo: year);
-            
+            .where('Year', isEqualTo: _selectedYear);
+    
+
+
+    
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Grades'),
@@ -64,7 +56,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(
                     child: Text('Year'),
                 ),
-
+                 DropdownButton<String>(
+                  value: _selectedYear,
+                  items: <String>['2023', '2024', '2025', '2026']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,
+                      style: TextStyle(
+                        color: Colors.amberAccent
+                      ),),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedYear = newValue!;
+                    });
+                  },
+                ),
+                
               ],
               
             ),
@@ -273,42 +283,6 @@ class EditTeacherPage extends StatefulWidget {
 }
 
 class _EditTeacherPageState extends State<EditTeacherPage> {
-
-
-    String year = '';
-
-      @override
-      void initState() {
-        super.initState();
-        _getData();
-      }
-
-      Future<void> _getData() async {
-        try {
-          final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-              .collection('schoolyear')
-              .doc('SchoolYear')
-              .get();
-          final String year = documentSnapshot.get('yearStarted');
-          setState(() {
-            this.year = year;
-          });
-        } catch (e) {
-          print('Error retrieving data: $e');
-        }
-      } 
-      
-
-
-
-
-
-
-
-
-
-
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController FirstQuarterController =  TextEditingController();
    final TextEditingController SecondQuarterController =  TextEditingController();
@@ -402,7 +376,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                               .collection('students')
                               .doc(widget.documentID)
                               .collection('Subjects')
-                              .where('Year', isEqualTo: year)
+                              .where('Year', isEqualTo: '2023')
                               .where('name', isEqualTo: widget.SubjectName)
                               .get();
 
@@ -417,7 +391,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
 
                           // Filter the grades by year
                           QuerySnapshot gradesSnapshot =
-                              await gradesColRef.where('Year', isEqualTo: year).get();
+                              await gradesColRef.where('Year', isEqualTo: '2023').get();
 
                           if (gradesSnapshot.docs.isEmpty) {
                             print('No grades found for the given year!');
