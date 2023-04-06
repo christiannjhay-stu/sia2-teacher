@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:read_data/Announcement.dart';
 import 'package:read_data/ViewEditGrades.dart';
 import 'package:read_data/affiliations.dart';
-import 'package:read_data/detailScreen.dart';
+
 import 'package:read_data/information.dart';
 import 'package:read_data/loginScreen.dart';
 import 'package:read_data/user_provider.dart';
