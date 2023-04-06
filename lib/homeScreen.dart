@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:read_data/Announcement.dart';
-import 'package:read_data/TestGrades.dart';
+import 'package:read_data/ViewEditGrades.dart';
 import 'package:read_data/affiliations.dart';
 import 'package:read_data/detailScreen.dart';
 import 'package:read_data/information.dart';
