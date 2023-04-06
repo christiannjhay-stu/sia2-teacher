@@ -1,3 +1,5 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:read_data/homeScreen.dart';
@@ -273,11 +275,11 @@ class EditTeacherPage extends StatefulWidget {
 }
 
 class _EditTeacherPageState extends State<EditTeacherPage> {
-  String _lockValue1 = "disable"; // default value
-  String _lockValue2 = "disable"; // default value
-  String _lockValue3 = "disable"; // default value
-  String _lockValue4 = "disable"; // default value
-
+  late bool _lockValue1 = false; // default value
+  late bool _lockValue2 = false; // default value
+ late bool _lockValue3 = false; // default value
+  late bool _lockValue4 =false; // default value
+  
     String year = '';
 
       @override
@@ -382,7 +384,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                enabled: _lockValue1 == "enable", // enable/disable based on lock value
+                enabled: _lockValue1 == true, // enable/disable based on lock value
                 controller: FirstQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
@@ -394,7 +396,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
-                 enabled: _lockValue2 == "enable", // enable/disable based on lock value
+                 enabled: _lockValue2 == "true", // enable/disable based on lock value
                 controller: SecondQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
@@ -406,7 +408,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
-                 enabled: _lockValue3 == "enable", // enable/disable based on lock value
+                 enabled: _lockValue3 == "true", // enable/disable based on lock value
                 controller: ThirdQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
@@ -418,7 +420,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
-                 enabled: _lockValue4 == "enable", // enable/disable based on lock value
+                 enabled: _lockValue4 == "true", // enable/disable based on lock value
                 controller: FourthQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
