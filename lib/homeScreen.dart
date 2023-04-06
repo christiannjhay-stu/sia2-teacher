@@ -31,6 +31,7 @@ class FirestoreDataScreenState extends State<FirestoreDataScreen> {
   void initState() {
     super.initState();
     getTeacherData();
+    
   }
 
 

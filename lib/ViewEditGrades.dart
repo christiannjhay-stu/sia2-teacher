@@ -273,13 +273,55 @@ class EditTeacherPage extends StatefulWidget {
 }
 
 class _EditTeacherPageState extends State<EditTeacherPage> {
-
+  String _lockValue1 = "disable"; // default value
+  String _lockValue2 = "disable"; // default value
+  String _lockValue3 = "disable"; // default value
+  String _lockValue4 = "disable"; // default value
 
     String year = '';
 
       @override
       void initState() {
         super.initState();
+
+
+         // fetch the lock value from Firestore and update _lockValue
+          FirebaseFirestore.instance.collection('lock').doc('N3P3FO3eYiLe54mJ7MKf').get().then((docSnapshot) {
+            setState(() {
+              _lockValue1 = docSnapshot.get('data1'); // assuming 'data1' is the field name
+            });
+          });
+
+          // fetch the lock value from Firestore and update _lockValue
+          FirebaseFirestore.instance.collection('lock').doc('N3P3FO3eYiLe54mJ7MKf').get().then((docSnapshot) {
+            setState(() {
+              _lockValue2 = docSnapshot.get('data2'); // assuming 'data1' is the field name
+            });
+          });
+
+          // fetch the lock value from Firestore and update _lockValue
+          FirebaseFirestore.instance.collection('lock').doc('N3P3FO3eYiLe54mJ7MKf').get().then((docSnapshot) {
+            setState(() {
+              _lockValue3 = docSnapshot.get('data3'); // assuming 'data1' is the field name
+            });
+          });
+
+          // fetch the lock value from Firestore and update _lockValue
+          FirebaseFirestore.instance.collection('lock').doc('N3P3FO3eYiLe54mJ7MKf').get().then((docSnapshot) {
+            setState(() {
+              _lockValue4 = docSnapshot.get('data4'); // assuming 'data1' is the field name
+            });
+          });
+
+
+
+
+
+
+
+
+
+
         _getData();
       }
 
@@ -340,6 +382,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
+                enabled: _lockValue1 == "enable", // enable/disable based on lock value
                 controller: FirstQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
@@ -351,6 +394,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
+                 enabled: _lockValue2 == "enable", // enable/disable based on lock value
                 controller: SecondQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
@@ -362,6 +406,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
+                 enabled: _lockValue3 == "enable", // enable/disable based on lock value
                 controller: ThirdQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
@@ -373,6 +418,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
+                 enabled: _lockValue4 == "enable", // enable/disable based on lock value
                 controller: FourthQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
