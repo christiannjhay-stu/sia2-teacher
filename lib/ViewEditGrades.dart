@@ -181,6 +181,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   gradeDoc['Grade4'] as String,
                                   )
                               .toList();
+                               List<String> gradesList4 = gradesSnapshot.data!.docs
+                              .map((QueryDocumentSnapshot<Map<String, dynamic>> gradeDoc) =>
+                                  gradeDoc['Final'] as String,
+                                  )
+                              .toList();
 
                           
                           return Row(
@@ -251,9 +256,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                                 ],)
-                              ),
-                              SizedBox(width: 70,),
+                              ), 
                               Container(
+                                width: 60,
+                                padding: EdgeInsets.only(left: 35),
+                                child: Stack(
+                                  children: <Widget>[
+                                    SizedBox(height: 5),
+                              ...gradesList4.map(
+                                (grade) => Text(
+                                  grade,
+                                  style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 218, 185, 0), fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                                ],)
+                              ),
+                              SizedBox(width: 10,),
+                              Container(
+                                
                                 width: 50,
                                 child: SizedBox(
                                 
