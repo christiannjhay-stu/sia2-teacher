@@ -1,5 +1,7 @@
 
 
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:read_data/homeScreen.dart';
@@ -344,6 +346,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
   late bool _lockValue2 = false; // default value
  late bool _lockValue3 = false; // default value
   late bool _lockValue4 =false; // default value
+   late bool _lockValue5 =false; // default value
   
     String year = '';
 
@@ -380,17 +383,77 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
             });
           });
 
-
-
-
-
-
-
-
+             FirebaseFirestore.instance.collection('lock').doc('N3P3FO3eYiLe54mJ7MKf').get().then((docSnapshot) {
+            setState(() {
+              _lockValue5 = docSnapshot.get('data5'); // assuming 'data1' is the field name
+            });
+          });
 
 
         _getData();
+       getFinalGrade(finalGradeController, Grade1Controller, Grade2Controller, Grade3Controller, Grade4Controller);
       }
+
+
+            void getFinalGrade(TextEditingController finalGradeController, TextEditingController Grade1Controller, TextEditingController Grade2Controller,
+            TextEditingController Grade3Controller, TextEditingController Grade4Controller) async {
+                  try {
+                    // Filter the subjects by year and name
+                    QuerySnapshot subjectSnapshot = await FirebaseFirestore.instance
+                        .collection('students')
+                        .doc(widget.documentID)
+                        .collection('Subjects')
+                        .where('Year', isEqualTo: year)
+                        .where('name', isEqualTo: widget.SubjectName)
+                        .get();
+
+                    if (subjectSnapshot.docs.isEmpty) {
+                      print('Subject not found!');
+                       print(widget.documentID);
+                       print(year);
+                       print(widget.SubjectName);
+
+                      return;
+                    }
+
+                    // Get the reference to the grades collection for the first matching subject
+                    DocumentReference subjectDocRef = subjectSnapshot.docs.first.reference;
+                    CollectionReference gradesColRef = subjectDocRef.collection('Grades');
+
+                    // Filter the grades by year
+                    QuerySnapshot gradesSnapshot =
+                        await gradesColRef.where('Year', isEqualTo: year).get();
+
+                    if (gradesSnapshot.docs.isEmpty) {
+                      print('No grades found for the given year!');
+                      return;
+                    }
+
+                    // Get the first grade document
+                    DocumentSnapshot gradeDocSnapshot = gradesSnapshot.docs.first;
+
+                    // Get the final grade and set it to the text editing controller
+                    String finalGrade = gradeDocSnapshot.get('Final');
+                    String Grade1 = gradeDocSnapshot.get('Grade1');
+                    String Grade2 = gradeDocSnapshot.get('Grade2');
+                    String Grade3 = gradeDocSnapshot.get('Grade3');
+                    String Grade4 = gradeDocSnapshot.get('Grade4');
+
+                    finalGradeController.text = finalGrade;
+                    Grade1Controller.text = Grade1;
+                    Grade2Controller.text = Grade2;
+                    Grade3Controller.text = Grade3;
+                    Grade4Controller.text = Grade4;
+
+
+                  } catch (e) {
+                    print('Error getting final grade: $e');
+                  }
+                }
+
+
+
+
 
       Future<void> _getData() async {
         try {
@@ -409,29 +472,25 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
       
 
 
-
-
-
-
-
-
-
-
-
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final TextEditingController FirstQuarterController =  TextEditingController();
-   final TextEditingController SecondQuarterController =  TextEditingController();
-    final TextEditingController ThirdQuarterController =  TextEditingController();
-   final TextEditingController FourthQuarterController =  TextEditingController();
+  
+ 
      
-     
+
+
+  TextEditingController finalGradeController = TextEditingController();
+  TextEditingController Grade1Controller = TextEditingController();
+  TextEditingController Grade2Controller = TextEditingController();
+  TextEditingController Grade3Controller = TextEditingController();
+  TextEditingController Grade4Controller = TextEditingController();
+
 
   @override
   void dispose() {
-    FirstQuarterController.dispose();
-    SecondQuarterController.dispose();
-    ThirdQuarterController.dispose();
-    FourthQuarterController.dispose();
+    finalGradeController.dispose();
+    Grade1Controller.dispose();
+    Grade2Controller.dispose();
+    Grade3Controller.dispose();
+    Grade4Controller.dispose();
     super.dispose();
   }
 
@@ -450,7 +509,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
             children: [
               TextField(
                 enabled: _lockValue1 == true, // enable/disable based on lock value
-                controller: FirstQuarterController,
+                controller: Grade1Controller,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
                     color: Colors.white
@@ -462,7 +521,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
               ),
               TextField(
                  enabled: _lockValue2 == true, // enable/disable based on lock value
-                controller: SecondQuarterController,
+                controller: Grade2Controller,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
                     color: Colors.white
@@ -474,7 +533,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
               ),
               TextField(
                  enabled: _lockValue3 == true, // enable/disable based on lock value
-                controller: ThirdQuarterController,
+                controller: Grade3Controller,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
                     color: Colors.white
@@ -486,7 +545,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
               ),
               TextField(
                  enabled: _lockValue4 == true, // enable/disable based on lock value
-                controller: FourthQuarterController,
+                controller: Grade4Controller,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
                     color: Colors.white
@@ -496,14 +555,26 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 ),
                 style: TextStyle(color: Colors.white),
               ),
+              TextField(
+                 enabled: _lockValue5 == true, // enable/disable based on lock value
+                controller: finalGradeController,
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(
+                    color: Colors.white
+                  ),
+                  labelText: 'FINAL',
+                  
+                ),
+                style: TextStyle(color: Colors.white),
+              ),
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
-                  final String FirstQuarter = FirstQuarterController.text;
-                  final String SecondQuarter = SecondQuarterController.text;
-                   final String ThirdQuarter = ThirdQuarterController.text;
-                  final String FourthQuarter = FourthQuarterController.text;
-
+                  final String FirstQuarter = Grade1Controller.text;
+                  final String SecondQuarter = Grade2Controller.text;
+                   final String ThirdQuarter = Grade3Controller.text;
+                  final String FourthQuarter = Grade4Controller.text;
+                  final String Final = finalGradeController.text;
 
                       
                 
@@ -543,8 +614,8 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                             'Grade1': FirstQuarter,
                             'Grade2': SecondQuarter,
                             'Grade3': ThirdQuarter,
-                            'Grade4': FourthQuarter
-                            
+                            'Grade4': FourthQuarter,
+                            'Final': Final
                             
                             
                             });
@@ -555,10 +626,6 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                         }
                                 
 
-                  
-
-
-                  
                  
                   ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
