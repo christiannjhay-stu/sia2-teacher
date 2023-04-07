@@ -102,13 +102,13 @@ class FirestoreDataScreenState extends State<FirestoreDataScreen> {
               return GestureDetector(
                 onTap: () {
                  
-                  print('working' + docId);
+                  print(docId);
                   Navigator.push(
                     
                     context,
                     MaterialPageRoute(
                       builder: (context) => MyHomePage(studentId: docId),
-
+                        
                     ),
                   );
                 },

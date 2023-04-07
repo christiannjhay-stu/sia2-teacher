@@ -286,8 +286,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     color: Colors.red,),
                                     onPressed: () {
                                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                        return EditTeacherPage(documentID: widget.studentId, SubjectName: subjectName );
+                                        return EditTeacherPage(documentID: widget.studentId, SubjectName: subjectName, YearNow: '2023', );
                                       }));
+                                      print(widget.studentId);
+                                      print(subjectName);
                                       
                                     },
                                 ),
@@ -319,12 +321,15 @@ class EditTeacherPage extends StatefulWidget {
   final String documentID;
   late String SubjectName;
   
+  final String YearNow;
+  
 
   EditTeacherPage({
 
      
     required this.documentID,
-    required this.SubjectName
+    required this.SubjectName,
+     required this.YearNow
     
 
     });
@@ -354,7 +359,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
       void initState() {
         super.initState();
 
-
+          
          // fetch the lock value from Firestore and update _lockValue
           FirebaseFirestore.instance.collection('lock').doc('N3P3FO3eYiLe54mJ7MKf').get().then((docSnapshot) {
             setState(() {
@@ -389,67 +394,73 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
             });
           });
 
-
+        getFinalGrade(finalGradeController, Grade1Controller, Grade2Controller, Grade3Controller, Grade4Controller);
         _getData();
-       getFinalGrade(finalGradeController, Grade1Controller, Grade2Controller, Grade3Controller, Grade4Controller);
+       
       }
 
 
-            void getFinalGrade(TextEditingController finalGradeController, TextEditingController Grade1Controller, TextEditingController Grade2Controller,
-            TextEditingController Grade3Controller, TextEditingController Grade4Controller) async {
-                  try {
-                    // Filter the subjects by year and name
-                    QuerySnapshot subjectSnapshot = await FirebaseFirestore.instance
-                        .collection('students')
-                        .doc(widget.documentID)
-                        .collection('Subjects')
-                        .where('Year', isEqualTo: year)
-                        .where('name', isEqualTo: widget.SubjectName)
-                        .get();
+                                              Future<void> getFinalGrade(
+                                        TextEditingController finalGradeController,
+                                        TextEditingController Grade1Controller,
+                                        TextEditingController Grade2Controller,
+                                        TextEditingController Grade3Controller,
+                                        TextEditingController Grade4Controller) async {
+                                      try {
+                                        // Filter the subjects by year and name
+                                        QuerySnapshot subjectSnapshot = await FirebaseFirestore.instance
+                                            .collection('students')
+                                            .doc(widget.documentID)
+                                            .collection('Subjects')
+                                            .where('Year', isEqualTo: widget.YearNow)
+                                            .where('name', isEqualTo: widget.SubjectName)
+                                            .get();
 
-                    if (subjectSnapshot.docs.isEmpty) {
-                      print('Subject not found!');
-                       print(widget.documentID);
-                       print(year);
-                       print(widget.SubjectName);
+                                        if (subjectSnapshot.docs.isEmpty) {
+                                          print('Subject not found!');
+                                          return;
+                                        }
 
-                      return;
-                    }
+                                        // Get the reference to the grades collection for the first matching subject
+                                        DocumentReference subjectDocRef = subjectSnapshot.docs.first.reference;
+                                        CollectionReference gradesColRef = subjectDocRef.collection('Grades');
 
-                    // Get the reference to the grades collection for the first matching subject
-                    DocumentReference subjectDocRef = subjectSnapshot.docs.first.reference;
-                    CollectionReference gradesColRef = subjectDocRef.collection('Grades');
+                                        // Filter the grades by year
+                                        QuerySnapshot gradesSnapshot =
+                                            await gradesColRef.where('Year', isEqualTo: widget.YearNow).get();
 
-                    // Filter the grades by year
-                    QuerySnapshot gradesSnapshot =
-                        await gradesColRef.where('Year', isEqualTo: year).get();
+                                        if (gradesSnapshot.docs.isEmpty) {
+                                          print('No grades found for the given year!');
+                                          return;
+                                        }
 
-                    if (gradesSnapshot.docs.isEmpty) {
-                      print('No grades found for the given year!');
-                      return;
-                    }
+                                        // Get the first grade document
+                                        DocumentSnapshot gradeDocSnapshot = gradesSnapshot.docs.first;
 
-                    // Get the first grade document
-                    DocumentSnapshot gradeDocSnapshot = gradesSnapshot.docs.first;
+                                        // Get the final grade and set it to the text editing controller
+                                        String finalGrade = gradeDocSnapshot.get('Final');
+                                        String Grade1 = gradeDocSnapshot.get('Grade1');
+                                        String Grade2 = gradeDocSnapshot.get('Grade2');
+                                        String Grade3 = gradeDocSnapshot.get('Grade3');
+                                        String Grade4 = gradeDocSnapshot.get('Grade4');
 
-                    // Get the final grade and set it to the text editing controller
-                    String finalGrade = gradeDocSnapshot.get('Final');
-                    String Grade1 = gradeDocSnapshot.get('Grade1');
-                    String Grade2 = gradeDocSnapshot.get('Grade2');
-                    String Grade3 = gradeDocSnapshot.get('Grade3');
-                    String Grade4 = gradeDocSnapshot.get('Grade4');
+                                        finalGradeController.text = finalGrade;
+                                        Grade1Controller.text = Grade1;
+                                        Grade2Controller.text = Grade2;
+                                        Grade3Controller.text = Grade3;
+                                        Grade4Controller.text = Grade4;
 
-                    finalGradeController.text = finalGrade;
-                    Grade1Controller.text = Grade1;
-                    Grade2Controller.text = Grade2;
-                    Grade3Controller.text = Grade3;
-                    Grade4Controller.text = Grade4;
+                                        print('Final grade: $finalGrade');
+                                        print('Grade 1: $Grade1');
+                                        print('Grade 2: $Grade2');
+                                        print('Grade 3: $Grade3');
+                                        print('Grade 4: $Grade4');
 
+                                      } catch (e) {
+                                        print('Error getting final grade: $e');
+                                      }
+                                    }
 
-                  } catch (e) {
-                    print('Error getting final grade: $e');
-                  }
-                }
 
 
 
@@ -465,6 +476,8 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
           setState(() {
             this.year = year;
           });
+
+          
         } catch (e) {
           print('Error retrieving data: $e');
         }
@@ -474,7 +487,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
 
   
  
-     
+  
 
 
   TextEditingController finalGradeController = TextEditingController();
@@ -483,7 +496,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
   TextEditingController Grade3Controller = TextEditingController();
   TextEditingController Grade4Controller = TextEditingController();
 
-
+  
   @override
   void dispose() {
     finalGradeController.dispose();
@@ -578,7 +591,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
 
                       
                 
-                      
+                        
                      
                                               try {
                           // Filter the subjects by year and name
