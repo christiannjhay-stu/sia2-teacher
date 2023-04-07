@@ -60,12 +60,29 @@ class _MyHomePageState extends State<MyHomePage> {
         
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 10,left: 20),
+            padding: EdgeInsets.only(top: 10,left: 100, bottom: 10),
             child: Row(
               children: <Widget>[
+                SizedBox(width: 37,),
                 Container(
-                    child: Text('Year'),
+                  child: Text('1ST', style: TextStyle(color: Colors.white),),
                 ),
+                   SizedBox(width: 37,),
+                Container(
+                  child: Text('2ND',style: TextStyle(color: Colors.white)),
+                ),
+                 SizedBox(width: 37,),
+                Container(
+                  child: Text('3RD',style: TextStyle(color: Colors.white)),
+                ),
+                 SizedBox(width: 37,),
+                    Container(
+                  child: Text('4TH', style: TextStyle(color: Colors.white)),
+                ),
+                SizedBox(width: 37,),
+                Container(
+                  child: Text('FINAL',style: TextStyle(color: Colors.white)),
+                )
 
               ],
               
@@ -103,17 +120,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       
                        
                     return Card(
-                      margin: EdgeInsets.all(10),
+                      shape: Border.all(width: 1),
+                      color: Color.fromARGB(255, 36, 59, 78),
+                      margin: EdgeInsets.only(left: 10, right: 10),
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            Container(
+                              width: 100,
+                              child: Text(
                               subjectDoc['name'],
                               
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(fontSize: 16, color: Colors.white),
                             ),
+                            ),
+                            
                             
                             SizedBox(height: 10),
                             StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -165,60 +188,79 @@ class _MyHomePageState extends State<MyHomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             
                             children: [
+                             SizedBox(width: 20,),
                              Container(
-                                padding: EdgeInsets.only(left: 20),
+                             
+                               width: 30,
+                               
                                 child: Stack(
                                   children: <Widget>[
                                     SizedBox(height: 5),
                               ...gradesList.map(
                                 (grade) => Text(
                                   grade,
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(fontSize: 16, color: Colors.white),
                                 ),
                               ),
                                 ],)
                               ),
+                                  SizedBox(width: 30,),
                               Container(
-                                padding: EdgeInsets.only(left: 20),
+                             
+                                 width: 30,
+                               
                                 child: Stack(
                                   children: <Widget>[
                                     SizedBox(height: 5),
                               ...gradesList1.map(
                                 (grade) => Text(
                                   grade,
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(fontSize: 16, color: Colors.white),
                                 ),
                               ),
                                 ],)
                               ),
+                                 SizedBox(width: 35,),
                               Container(
-                                padding: EdgeInsets.only(left: 20),
+                            
+                               width: 30,
+                                
                                 child: Stack(
                                   children: <Widget>[
                                     SizedBox(height: 5),
                               ...gradesList2.map(
                                 (grade) => Text(
                                   grade,
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(fontSize: 16, color: Colors.white),
                                 ),
                               ),
                                 ],)
                               ),
+                                SizedBox(width: 35,),
                               Container(
-                                padding: EdgeInsets.only(left: 20),
+                             
+                                 width: 30,
+                              
                                 child: Stack(
                                   children: <Widget>[
                                     SizedBox(height: 5),
                               ...gradesList3.map(
                                 (grade) => Text(
                                   grade,
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(fontSize: 16, color: Colors.white),
                                 ),
                               ),
                                 ],)
                               ),
-                               new IconButton(
+                              SizedBox(width: 70,),
+                              Container(
+                                width: 50,
+                                child: SizedBox(
+                                
+                                height: 15,
+                                child: IconButton(
                                     icon: Icon(Icons.edit,
+                                    size: 15,
                                     color: Colors.red,),
                                     onPressed: () {
                                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
@@ -226,7 +268,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       }));
                                       
                                     },
-                                ), 
+                                ),
+                              )
+                              )
+                               
                             ],
                           );
                         },
@@ -396,7 +441,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
-                 enabled: _lockValue2 == "true", // enable/disable based on lock value
+                 enabled: _lockValue2 == true, // enable/disable based on lock value
                 controller: SecondQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
@@ -408,7 +453,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
-                 enabled: _lockValue3 == "true", // enable/disable based on lock value
+                 enabled: _lockValue3 == true, // enable/disable based on lock value
                 controller: ThirdQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
@@ -420,7 +465,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               TextField(
-                 enabled: _lockValue4 == "true", // enable/disable based on lock value
+                 enabled: _lockValue4 == true, // enable/disable based on lock value
                 controller: FourthQuarterController,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
