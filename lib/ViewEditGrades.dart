@@ -286,7 +286,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     color: Colors.red,),
                                     onPressed: () {
                                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                        return EditTeacherPage(documentID: widget.studentId, SubjectName: subjectName, YearNow: '2023', );
+                                        return EditTeacherPage(documentID: widget.studentId, SubjectName: subjectName, YearNow: year );
                                       }));
                                       print(widget.studentId);
                                       print(subjectName);
