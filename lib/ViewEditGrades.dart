@@ -556,18 +556,31 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 ),
                 style: TextStyle(color: Colors.white),
               ),
-              TextField(
+              
+              Container(
+                padding: EdgeInsets.all(10),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                  color: const Color(0xff3A4859),
+                  borderRadius: BorderRadius.circular(10),
+                          ),
+                        width: 360,
+                child: TextField(
+                  
                  enabled: _lockValue4 == true, // enable/disable based on lock value
                 controller: Grade4Controller,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
                     color: Colors.white
+                    
                   ),
                   labelText: '4TH QUARTER',
                   
                 ),
                 style: TextStyle(color: Colors.white),
               ),
+              ),
+              
               TextField(
                  enabled: _lockValue5 == true, // enable/disable based on lock value
                 controller: finalGradeController,
