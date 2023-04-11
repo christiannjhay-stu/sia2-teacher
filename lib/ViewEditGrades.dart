@@ -4,6 +4,8 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:read_data/Remarks.dart';
 import 'package:read_data/homeScreen.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -26,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _getData() async {
+
     try {
       final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
           .collection('schoolyear')
@@ -58,13 +61,44 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('Grades'),
       ),
+     
       body: Column(
         
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 10,left: 100, bottom: 10),
+            padding: EdgeInsets.only(left: 10, top: 20, bottom: 20),
             child: Row(
               children: <Widget>[
+               Container(
+                child: Text('Remarks', style: TextStyle(color: Colors.white),), 
+               ),
+               Container(
+                             padding: EdgeInsets.only(bottom: 12),   
+                  width: 50,
+                 child: SizedBox(
+                                
+                height: 15,
+                child: IconButton(
+                    icon: Icon(Icons.edit,
+                     size: 15,
+                     color: Colors.red,),
+                      onPressed: () {
+                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                       return AddSubjectScreen( studID: widget.studentId);
+                       }));
+                       print(widget.studentId);
+                                     
+                                      
+                  },
+                 ),
+             )
+                              
+              ),
+               
+              
+             
+
+
                 SizedBox(width: 37,),
                 Container(
                   child: Text('1ST', style: TextStyle(color: Colors.white),),
@@ -84,7 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 37,),
                 Container(
                   child: Text('FINAL',style: TextStyle(color: Colors.white)),
-                )
+                ),
+                
 
               ],
               
@@ -294,7 +329,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     },
                                 ),
                               )
+                              
                               )
+                              
                                
                             ],
                           );
@@ -306,8 +343,11 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           );
+          
+          
         },
       ),
+      
           )]
     ));
   }
@@ -594,6 +634,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 16.0),
+              
               ElevatedButton(
                 onPressed: () async {
                   final String FirstQuarter = Grade1Controller.text;
