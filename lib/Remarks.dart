@@ -55,6 +55,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                 child: AbsorbPointer(
                   absorbing: false,
                   child: DropdownButtonFormField(
+                    
                     items: [
                       DropdownMenuItem(
                         value: '',
@@ -62,11 +63,11 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                       ),
                       DropdownMenuItem(
                         value: 'Passed',
-                        child: Text('Passed'),
+                        child: Text('Passed', style: TextStyle(color: Color.fromARGB(246, 255, 208, 0)),),
                       ),
                       DropdownMenuItem(
                         value: 'Retained',
-                        child: Text('Retained'),
+                        child: Text('Retained', style: TextStyle(color: Color.fromARGB(246, 255, 208, 0))),
                       ),
                     ],
                     value: remarksValue,
@@ -83,6 +84,7 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
                     decoration: InputDecoration(
                         labelText: 'Remarks',
                         labelStyle: TextStyle(color: Colors.white)),
+                        dropdownColor: Colors.grey[800],
                   ),
                 ),
               )
