@@ -387,18 +387,23 @@ class EditTeacherPage extends StatefulWidget {
 }
 
 class _EditTeacherPageState extends State<EditTeacherPage> {
+  DateTime now = DateTime.now();
+
   late bool _lockValue1 = false; // default value
   late bool _lockValue2 = false; // default value
  late bool _lockValue3 = false; // default value
   late bool _lockValue4 =false; // default value
    late bool _lockValue5 =false; // default value
+
+
+   
   
     String year = '';
 
       @override
       void initState() {
         super.initState();
-
+        now = DateTime.now();
           
          // fetch the lock value from Firestore and update _lockValue
           FirebaseFirestore.instance.collection('lock').doc('N3P3FO3eYiLe54mJ7MKf').get().then((docSnapshot) {
@@ -549,6 +554,9 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    bool isAugust15 = now.month == 8 && now.day == 15;
+   
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 9, 26, 47),
@@ -561,7 +569,7 @@ class _EditTeacherPageState extends State<EditTeacherPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                enabled: _lockValue1 == true, // enable/disable based on lock value
+                enabled: _lockValue1 == true || isAugust15, // enable/disable based on lock value
                 controller: Grade1Controller,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
